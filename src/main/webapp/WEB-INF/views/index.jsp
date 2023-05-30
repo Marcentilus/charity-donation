@@ -12,8 +12,7 @@
 
     <link rel="stylesheet" href="<c:url value="resources/css/style.css"/>"/>
 </head>
-<body>
-<header class="header--main-page">
+
     <jsp:include page="header.jsp"/>
 
     <div class="slogan container container--90">
@@ -90,42 +89,50 @@
     <h2>Komu pomagamy?</h2>
 
     <!-- SLIDE 1 -->
+
     <div class="help--slides active" data-id="1">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy.
             Możesz sprawdzić czym się zajmują.</p>
 
         <ul class="help--slides-items">
+            <c:forEach items="${institutions}" var="institution" varStatus="varStatus">
             <li>
+                <c:if test="${(varStatus.index+1)%2 == 0 && (varStatus.count)%2 == 0}">
                 <div class="col">
-                    <div class="title">Fundacja "Dbam o Zdrowie"</div>
-                    <div class="subtitle">Cel i misja: Pomoc dzieciom z ubogich rodzin.</div>
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
                 </div>
+                </c:if>
+                <c:if test="${(varStatus.index+1)%2 != 0 && (varStatus.count)%2 == 0}">
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                </c:if>
 
-                <div class="col">
-                    <div class="title">Fundacja "A kogo"</div>
-                    <div class="subtitle">Cel i misja: Pomoc wybudzaniu dzieci ze śpiączki.</div>
-                </div>
             </li>
 
             <li>
-                <div class="col">
-                    <div class="title">Fundacja “Dla dzieci"</div>
-                    <div class="subtitle">Cel i misja: Pomoc osobom znajdującym się w trudnej sytuacji życiowej.</div>
-                </div>
-                <div class="col">
-                    <div class="title">Fundacja “Bez domu”</div>
-                    <div class="subtitle">Cel i misja: Pomoc dla osób nie posiadających miejsca zamieszkania</div>
-                </div>
 
+                <c:if test="${(varStatus.index+1)%2 == 0 && (varStatus.count)%2 != 0}">
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                    </c:if>
+                <c:if test="${(varStatus.index+1)%2 != 0 && (varStatus.count)%2 != 0}">
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                    </c:if>
             </li>
-
+            </c:forEach>
         </ul>
+
+
     </div>
 
 </section>
 
 <jsp:include page="footer.jsp"/>
-
-<script src="<c:url value="resources/js/app.js"/>"></script>
-</body>
-</html>
