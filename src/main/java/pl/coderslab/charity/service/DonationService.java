@@ -16,13 +16,24 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
 
-    public Optional<Donation> findDonationById(long id){
+    public Optional<Donation> findDonationById(long id) {
 
         return donationRepository.findById(id);
 
     }
 
-    public List<Donation> findAllDonations(){
+    public List<Donation> findAllDonations() {
         return donationRepository.findAll();
     }
+
+    public int getTotalDonationQty() {
+
+       return donationRepository.getQuantitySum().orElse(0);
+    }
+
+    public long getTotalDonations(){
+
+        return donationRepository.count();
+    }
+
 }
