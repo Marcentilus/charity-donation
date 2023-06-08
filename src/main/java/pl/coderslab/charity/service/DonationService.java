@@ -36,4 +36,9 @@ public class DonationService {
         return donationRepository.count();
     }
 
+    public void addDonation(Donation donation){
+
+        donationRepository.save(donation);
+    }
+
 }

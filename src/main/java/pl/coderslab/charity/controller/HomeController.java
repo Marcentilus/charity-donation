@@ -1,18 +1,13 @@
-package pl.coderslab.charity;
+package pl.coderslab.charity.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
-
-import java.util.List;
-import java.util.Objects;
 
 
 @Controller
@@ -28,7 +23,7 @@ public class HomeController {
 
 
 
-        model.addAttribute("institutions",institutionService.findAllInstitutions());
+        model.addAttribute("institutions", institutionService.findFirstFourInstitutions());
 
          model.addAttribute("totalQuantity", donationService.getTotalDonationQty());
 

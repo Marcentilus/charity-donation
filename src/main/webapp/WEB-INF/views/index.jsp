@@ -87,37 +87,19 @@
 
 
         <ul class="help--slides-items">
-                <c:if test="${institutions.size()% 2 ==0}">
-                <c:forEach items="${institutions}" var="institution" step="2" begin="0" varStatus="varStatus">
-                <li>
-                    <div class="col">
-                            <div class="title">${institution.name}</div>
-                            <div class="subtitle">${institution.description}</div>
-                    </div>
-                    <div class="col">
-                        <div class="title"><c:if test="${not varStatus.last}"> ${institutions.get(varStatus.index+1).name}</c:if></div>
-                        <div class="subtitle"><c:if test="${not varStatus.last}">${institutions.get(varStatus.index+1).description}</c:if></div>
-                        <div class="title"><c:if test="${varStatus.last}"> ${institutions.get(institutions.size()-1).name}</c:if></div>
-                        <div class="subtitle"><c:if test="${varStatus.last}">${institutions.get(institutions.size()-1).description}</c:if></div>
-                    </div>
-                </li>
-                </c:forEach>
-                </c:if>
-            <c:if test="${institutions.size()% 2 !=0}">
-                <c:forEach items="${institutions}" var="institution" step="2" begin="0" varStatus="varStatus">
-                    <li>
-                        <div class="col">
-                            <div class="title">${institution.name}</div>
-                            <div class="subtitle">${institution.description}</div>
-                        </div>
-                        <div class="col">
-                            <div class="title"><c:if test="${not varStatus.last}"> ${institutions.get(varStatus.index+1).name}</c:if></div>
-                            <div class="subtitle"><c:if test="${not varStatus.last}">${institutions.get(varStatus.index+1).description}</c:if></div>
 
-                        </div>
-                    </li>
+                <c:forEach items="${institutions}" var="institution" varStatus="varStatus">
+                    <c:if test="${varStatus.count % 2 != 0}">
+                <li>
+                    </c:if>
+                    <div class="col">
+                            <div class="title">${institution.name}</div>
+                            <div class="subtitle">${institution.description}</div>
+                    </div>
+                <c:if test="${varStatus.count % 2 == 0}">
+                </li>
+                </c:if>
                 </c:forEach>
-            </c:if>
         </ul>
 
 

@@ -164,7 +164,127 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
       // TODO: get data from inputs and show them in summary
+
+
+if(this.currentStep ===5) {
+  this.getDonation()
+  this.getAddress()
+  this.getDateAndTime()
+}
+
+
+
+
     }
+
+    getDonation(){
+
+      const category = document.querySelectorAll("[name=categories]:checked")
+
+      const organizationInput = document.querySelector("[name=institution]:checked").parentElement.lastElementChild.firstElementChild
+
+
+      let input = "";
+
+      let checkedCategories = []
+      category.forEach(el =>
+          checkedCategories.push(el.parentElement.lastElementChild.innerHTML));
+
+
+
+      checkedCategories.forEach(function (el){
+
+         input = input + el + "; "
+
+
+
+      })
+      const ulDonation = document.querySelector("#donation");
+      const quantityInput = document.querySelector("#quantity");
+      const categorySpan = ulDonation.querySelector(".summary--text")
+      const organizationSpan = ulDonation.querySelector(".icon-hand").nextElementSibling
+
+
+      const quantity = quantityInput.value
+      categorySpan.innerHTML = quantity + " worki: " + input;
+      organizationSpan.innerHTML = organizationInput.innerHTML
+
+
+    }
+
+    getAddress(){
+
+      const street = "street";
+      const city = "city";
+      const zipCode = "zipCode";
+      const phone = "phone";
+
+
+    const divAddress = document.querySelector("#address")
+      const labelsAddress = divAddress.querySelectorAll("label")
+      const ulElement = document.querySelector("#address-list")
+      const liElements = ulElement.querySelectorAll("li")
+
+
+  let counter = 0
+
+      labelsAddress.forEach( function (el){
+        switch (el.getAttribute("id")){
+          case street:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+            break;
+          case city:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+            break;
+          case zipCode:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+            break;
+          case phone:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+            break;
+        }
+        counter++
+      })
+
+    }
+    getDateAndTime(){
+      const divDateTime = document.querySelector("#date-time")
+      const labelsDateTime = divDateTime.querySelectorAll("label")
+      const ulElement = document.querySelector("#date-time-list")
+      const liElements = ulElement.querySelectorAll("li")
+
+      const date = "date"
+      const time = "time"
+      const comment = "comment"
+
+      let counter = 0
+
+      labelsDateTime.forEach( function (el){
+        switch (el.getAttribute("id")){
+          case date:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+
+            break;
+          case time:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+
+            break;
+          case comment:
+
+            liElements[counter].innerHTML = el.firstElementChild.value
+
+            break;
+        }
+        counter ++
+      })
+    }
+
 
   }
   const form = document.querySelector(".form--steps");
