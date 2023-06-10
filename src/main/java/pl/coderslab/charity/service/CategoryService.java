@@ -1,11 +1,11 @@
 package pl.coderslab.charity.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.repository.CategoryRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

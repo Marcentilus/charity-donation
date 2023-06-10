@@ -2,18 +2,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
-    <jsp:include page="header.jsp"/>
+<jsp:include page="header.jsp"/>
 
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Zacznij pomagać!<br/>
-                Oddaj niechciane rzeczy w zaufane ręce
-            </h1>
-        </div>
+<sec:authorize access="isAuthenticated()">
+
+        <li><a href="<c:url value="/user/edit/${userId}"/>" class="btn btn--without-border">Edytuj konto</a></li>
+    </ul>
+
+    </nav>
+</sec:authorize>
+
+<div class="slogan container container--90">
+    <div class="slogan--item">
+        <h1>
+            Zacznij pomagać!<br/>
+            Oddaj niechciane rzeczy w zaufane ręce
+        </h1>
     </div>
+</div>
 </header>
 
 <section class="stats">
@@ -62,7 +71,10 @@
         </div>
     </div>
 
-    <a href="#" class="btn btn--large">Załóż konto</a>
+    <sec:authorize access="not isAuthenticated()">
+        <a href="<c:url value="/user/add"/>" class="btn btn--large">Załóż konto</a>
+    </sec:authorize>
+
 </section>
 
 <section class="about-us">
@@ -88,18 +100,18 @@
 
         <ul class="help--slides-items">
 
-                <c:forEach items="${institutions}" var="institution" varStatus="varStatus">
-                    <c:if test="${varStatus.count % 2 != 0}">
-                <li>
-                    </c:if>
-                    <div class="col">
-                            <div class="title">${institution.name}</div>
-                            <div class="subtitle">${institution.description}</div>
-                    </div>
-                <c:if test="${varStatus.count % 2 == 0}">
-                </li>
+            <c:forEach items="${institutions}" var="institution" varStatus="varStatus">
+                <c:if test="${varStatus.count % 2 != 0}">
+                    <li>
                 </c:if>
-                </c:forEach>
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                <c:if test="${varStatus.count % 2 == 0}">
+                    </li>
+                </c:if>
+            </c:forEach>
         </ul>
 
 
