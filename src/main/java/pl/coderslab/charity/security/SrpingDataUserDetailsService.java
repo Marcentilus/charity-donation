@@ -25,7 +25,7 @@ public class SrpingDataUserDetailsService implements UserDetailsService {
     @Transactional
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.findUserByUsername(username);
+        User user = userService.findByName(username);
         if (user == null){
             throw new UsernameNotFoundException(username);
         }

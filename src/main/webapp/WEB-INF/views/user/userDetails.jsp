@@ -13,29 +13,27 @@
 
 <section class="login-page">
     <h2>Sczegóły konta</h2>
-    <form:form modelAttribute="user" method="post" action="/admin/user/edit">
+    <form:form modelAttribute="user" method="post" action="/user/edit">
 
         <div class="form-group">
             <form:input path="userName" placeholder="Imię" /><form:errors path="userName" cssClass="error"/>
         </div>
         <div class="form-group">
-            <form:input path="email" placeholder="email"/><form:errors path="email" cssClass="error"/>
+            <form:input path="email" placeholder="email" disabled="true" />
         </div>
         <div class="form-group form-group--checkbox">
             <label>
-                <form:checkbox
+                <form:hidden
                         path="enabled"/>
                 <span class="checkbox"></span>
                 <span class="description">Active</span>
             </label>
         </div>
-
         <div class="form-group form-group--buttons">
             <a href="<c:url value="/"/>" class="btn btn--without-border">Anuluj</a>
             <a href="<c:url value="/user/editPassword/${user.email}"/>" class="btn btn--without-border">Zmień hasło</a>
             <button class="btn" type="submit">Zapisz</button>
         </div>
-
     </form:form>
 
 

@@ -9,7 +9,7 @@
 
 <sec:authorize access="isAuthenticated()">
 
-        <li><a href="<c:url value="/user/edit/${userId}"/>" class="btn btn--without-border">Edytuj konto</a></li>
+        <li><a href="<c:url value="/user/details/${userId}"/>" class="btn btn--without-border">Szczegóły konta</a></li>
     </ul>
 
     </nav>

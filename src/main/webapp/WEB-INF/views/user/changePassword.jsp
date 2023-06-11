@@ -6,29 +6,36 @@
 
 <jsp:include page="../header.jsp"/>
 </header>
+</ul>
+
+</nav>
 
 <section class="login-page">
-    <h2>Edytuj konto</h2>
-    <form:form modelAttribute="user" method="post" action="/user/edit">
+    <h2>Zmiana hasła</h2>
+    <form method="post" action="/user/editPassword/${username}">
 
+        <c:if test="${not empty message}">
         <div class="form-group">
-            <form:input path="name" placeholder="Imię" /><form:errors path="name" cssClass="error"/>
+            <input type="password" placeholder="${message}" name="oldPassword"/>
+        </div>
+        </c:if>
+        <c:if test="${empty message}">
+            <div class="form-group">
+                <input type="password" placeholder="Wprowadź stare hasło" name="oldPassword"/>
+            </div>
+        </c:if>
+        <div class="form-group">
+            <input type="password" placeholder="Wprowadź nowe hasło" name="newPassword" />
         </div>
         <div class="form-group">
-            <form:input path="username" type="email" placeholder="Email" /><form:errors path="username" cssClass="error"/>
+            <input type="password" placeholder="Powtórz nowe hasło" name="newPasswordRep" />
         </div>
-        <div class="form-group">
-            <form:password path="password" placeholder="Hasło" /><form:errors path="password" cssClass="error"/>
-        </div>
-
-        <form:hidden path="donation"/>
-        <form:hidden path="id"/>
 
         <div class="form-group form-group--buttons">
             <a href="<c:url value="/"/>" class="btn btn--without-border">Anuluj</a>
             <button class="btn" type="submit">Zapisz</button>
         </div>
-    </form:form>
+    </form>
 </section>
 
 <jsp:include page="../footer.jsp"/>

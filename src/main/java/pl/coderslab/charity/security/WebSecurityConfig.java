@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
 
                 )
-                .formLogin().loginPage("/login").defaultSuccessUrl("/")
+                .formLogin().loginPage("/login").defaultSuccessUrl("/user/validation")
                 .and().logout().logoutSuccessUrl("/")
                 .permitAll()
                 .and().exceptionHandling().accessDeniedPage("/403");

@@ -19,14 +19,5 @@ public class LoginController {
         }
 
 
-        @PostMapping("")
-    public String loginValidation(User user){
-
-        if(user.isEnabled()){
-            return "/";
-        }
-        return "user/blocked";
-
-        }
 
 }

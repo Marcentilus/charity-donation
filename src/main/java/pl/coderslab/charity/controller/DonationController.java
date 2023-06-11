@@ -1,5 +1,6 @@
 package pl.coderslab.charity.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,7 @@ public class DonationController {
     }
 
     @PostMapping("/add")
-    public String processForm(Donation donation, BindingResult result){
+    public String processForm(@Valid Donation donation, BindingResult result){
 
         if(result.hasErrors()){
             return "donationForm";

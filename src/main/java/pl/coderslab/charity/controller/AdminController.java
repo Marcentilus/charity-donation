@@ -3,13 +3,13 @@ package pl.coderslab.charity.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import pl.coderslab.charity.dto.UserNameDto;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.service.InstitutionService;
@@ -93,9 +93,29 @@ public class AdminController {
     @GetMapping("user/edit/{id}")
     public String adminEditUser(@PathVariable long id,Model model){
 
-        model.addAttribute("user",userService.getUserById(id));
+        try {
+            model.addAttribute("user", userService.getUserNameDTO(id));
+            model.addAttribute("userPassword", userService.getUserPasswordDTO(id));
+        } catch(ResponseStatusException e){
+            return "404";
+        }
 
         return "user/adminEdit";
+    }
+    @PostMapping("user/edit")
+    public String editUser(@Valid UserNameDto userNameDto, BindingResult result){
+        if(result.hasErrors()){
+            return "user/userDetails";
+        }
+
+        boolean test = userNameDto.isEnabled();
+        try {
+            userService.editUser(userNameDto);
+        } catch (UsernameNotFoundException e){
+            return "404";
+        }
+
+        return "index";
     }
 
     @GetMapping("/user/delete/{id}")

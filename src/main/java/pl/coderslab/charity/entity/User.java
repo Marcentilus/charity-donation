@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import pl.coderslab.charity.dto.UserNameDto;
+import pl.coderslab.charity.dto.UserPasswordDto;
 
 
 import java.util.ArrayList;
@@ -47,5 +49,19 @@ public class User {
 
     public User() {
 
+    }
+
+    public UserNameDto getAsDTO(){
+        return UserNameDto.builder()
+                .userName(this.name)
+                .email(this.username)
+                .enabled(this.enabled)
+                .build();
+    }
+
+    public UserPasswordDto getPasswordAsDTO(){
+        return UserPasswordDto.builder()
+                .oldPassword(this.password)
+                .build();
     }
 }
