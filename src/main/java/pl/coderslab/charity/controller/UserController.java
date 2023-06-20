@@ -27,18 +27,17 @@ public class UserController {
 
     @GetMapping("/add")
     public String showUserForm(Model model){
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserNameDto());
 
         return "user/register";
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid User user, BindingResult result){
+    public String addUser(@Valid UserNameDto user, BindingResult result){
         if(result.hasErrors()){
             return "user/register";
         }
-
-        userService.saveUser(user);
+            userService.saveUser(user);
 
         return "index";
     }

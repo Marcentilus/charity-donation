@@ -141,5 +141,17 @@ public class AdminController {
         return "user/deleteConfirmation";
     }
 
+    @GetMapping("/add")
+    public String showAdminForm(Model model){
+
+        UserNameDto admin = UserNameDto.builder()
+                        .admin(true)
+                                .build();
+
+        model.addAttribute("user", admin);
+
+
+        return "user/register";
+    }
 
 }

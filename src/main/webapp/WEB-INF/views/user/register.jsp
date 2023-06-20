@@ -9,13 +9,13 @@
 
 <section class="login-page">
   <h2>Załóż konto</h2>
-  <form:form modelAttribute="user">
+  <form:form modelAttribute="user" action="/user/add" method="post">
 
     <div class="form-group">
-      <form:input path="name" placeholder="Imię" /><form:errors path="name" cssClass="error"/>
+      <form:input path="userName" placeholder="Imię" /><form:errors path="userName" cssClass="error"/>
     </div>
     <div class="form-group">
-      <form:input path="username" type="email" placeholder="Email" /><form:errors path="username" cssClass="error"/>
+      <form:input path="email" type="email" placeholder="Email" /><form:errors path="email" cssClass="error"/>
     </div>
     <div class="form-group">
       <form:password path="password" placeholder="Hasło" />
@@ -23,7 +23,8 @@
     <div class="form-group">
       <input type="password" name="password2" placeholder="Powtórz hasło" />
     </div>
-    <form:hidden path="donation"/>
+    <form:hidden path="enabled"/>
+    <form:hidden path="admin"/>
 
     <div class="form-group form-group--buttons">
       <a href="<c:url value="/login"/>" class="btn btn--without-border">Zaloguj się</a>

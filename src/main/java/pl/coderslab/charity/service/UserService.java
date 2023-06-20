@@ -39,25 +39,28 @@ public class UserService implements CustomUserService {
 
 
     @Override
-    public User saveUser(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User saveUser(UserNameDto userDto){
+
+        User user = new User();
+        Role userRole;
+
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setName(userDto.getUserName());
+        user.setUsername(userDto.getEmail());
         user.setEnabled(true);
-        Role userRole = roleRepository.findByName("ROLE_USER");
+        if(userDto.isAdmin()) {
+            userRole = roleRepository.findByName("ROLE_ADMIN");
+            user.setAdmin(true);
+        } else {
+            userRole = roleRepository.findByName("ROLE_USER");
+        }
         user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
         return userRepository.save(user);
 
     }
-    @Override
-    public User saveAdmin(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true);
-        Role userRole = roleRepository.findByName("ROLE_ADMIN");
-        user.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
-        return userRepository.save(user);
 
-    }
 
 
     public void deleteUserById(long id){

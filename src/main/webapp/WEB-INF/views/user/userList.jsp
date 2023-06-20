@@ -35,7 +35,7 @@
             <li><a href="#" class="btn btn--without-border">O co chodzi?</a></li>
             <li><a href="#" class="btn btn--without-border">O nas</a></li>
             <li><a href="#" class="btn btn--without-border">Kontakt</a></li>
-            <li><a href="<c:url value="/admin/institution/add"/>" class="btn btn--without-border">Dodaj organizację do listy</a></li>
+            <li><a href="<c:url value="/admin/add"/>" class="btn btn--without-border">Dodaj admina</a></li>
         </ul>
     </nav>
 </header>
