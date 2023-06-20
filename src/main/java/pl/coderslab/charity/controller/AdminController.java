@@ -3,6 +3,7 @@ package pl.coderslab.charity.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import pl.coderslab.charity.dto.UserNameDto;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.security.CurrentUser;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
 
@@ -84,7 +86,14 @@ public class AdminController {
     }
 
     @GetMapping("/user/list")
-    public String showUserList(Model model){
+    public String showUserList(Model model, @AuthenticationPrincipal CurrentUser currentUser){
+
+        if(currentUser != null){
+            model.addAttribute("currentUserId", currentUser
+                    .getUser()
+                    .getId());
+        }
+
         model.addAttribute("users", userService.findAllUsers());
 
         return "user/userList";

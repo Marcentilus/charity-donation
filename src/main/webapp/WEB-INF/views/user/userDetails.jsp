@@ -22,13 +22,7 @@
             <form:input path="email" placeholder="email" disabled="true" />
         </div>
         <div class="form-group form-group--checkbox">
-            <label>
-                <form:hidden
-                        path="enabled"/>
-                <span class="checkbox"></span>
-                <span class="description">Active</span>
-            </label>
-        </div>
+
         <div class="form-group form-group--buttons">
             <a href="<c:url value="/"/>" class="btn btn--without-border">Anuluj</a>
             <a href="<c:url value="/user/editPassword/${user.email}"/>" class="btn btn--without-border">Zmień hasło</a>

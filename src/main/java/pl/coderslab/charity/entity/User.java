@@ -35,6 +35,8 @@ public class User {
 
     private boolean enabled;
 
+    private boolean admin;
+
 
     @OneToMany
     @JoinColumn(name = "user_id")

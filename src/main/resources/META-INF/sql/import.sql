@@ -64,5 +64,5 @@ insert into categories(name) value ('zabawki');
 insert into categories(name) value ('książki');
 insert into categories(name) value ('inne');
 
-insert into charity_donation.role(name) value ('ROLE_USER')
-insert into charity_donation.role(name) value ('ROLE_ADMIN')
+insert into role(name) value ('ROLE_USER')
+insert into role(name) value ('ROLE_ADMIN')

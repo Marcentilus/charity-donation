@@ -28,12 +28,13 @@ public class HomeController {
     @RequestMapping("/")
     public String homeAction(Model model, @AuthenticationPrincipal CurrentUser currentUser, HttpSession session){
 
-      /*  User admin = User.builder()
+   /*     User admin = User.builder()
                 .username("admin@charity.pl")
+                .name("admin")
                 .password("YT-1300$Corellian")
                 .build();
-        userService.saveAdmin(admin);*/
-
+        userService.saveAdmin(admin);
+*/
         if(currentUser != null) {
             model.addAttribute("userId", currentUser
                     .getUser()

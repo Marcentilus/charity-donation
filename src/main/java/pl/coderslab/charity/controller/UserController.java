@@ -52,7 +52,7 @@ public class UserController {
         return "user/changePassword";
     }
     @PostMapping("/editPassword/{username}")
-    public String changePassword(@PathVariable String username, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, Model model){
+    public String changePassword(@PathVariable String username, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, Model model, HttpServletRequest request) throws ServletException {
         UserPasswordDto userPasswordDto = UserPasswordDto.builder()
                 .oldPassword(oldPassword)
                 .newPassword(newPassword)
@@ -62,6 +62,7 @@ public class UserController {
             model.addAttribute("message", "password does not match");
             return "user/changePassword";
         }
+        request.logout();
 
         return "user/passwordChangeConfirmation";
 
@@ -76,8 +77,6 @@ public class UserController {
 
         return "index";
     }
-
-
 
     @GetMapping("/details/{id}")
     public String showUserDetails(Model model, @PathVariable long id){
@@ -99,8 +98,9 @@ public class UserController {
                 request.logout();
                 return "user/blocked";
             }
+
         }
-        return "/";
+        return "redirect:/";
     }
 
 

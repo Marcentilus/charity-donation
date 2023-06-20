@@ -46,13 +46,15 @@
 
     <div class="row">
         <div class="col-sm-6">
+            <c:if test="${user.id != currentUserId}">
             <a href="<c:url value="/admin/user/confirm-delete/${user.id}"/>"><button type="button"  class="btn btn--without-border">Usuń</button></a>
+            </c:if>
             <a href="<c:url value="/admin/user/edit/${user.id}"/>"><button type="button"  class="btn btn--without-border">Edytuj</button></a>
         </div>
         <div class="col-sm-6">
             <h1>
                   Login:  ${user.username}<br><br>
-                  Imie użytkownika:  ${user.name}
+                Imie użytkownika:  ${user.name} <c:if test="${user.id == currentUserId}"><p style="float: right"> Admin</p></c:if>
             </h1>
         </div>
     </div>
