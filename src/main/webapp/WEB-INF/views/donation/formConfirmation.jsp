@@ -3,7 +3,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="../header.jsp"/>
+</ul>
+
+</nav>
 
   <div class="slogan container container--90">
     <h2>
@@ -13,4 +16,4 @@
   </div>
 </header>
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="../footer.jsp"/>

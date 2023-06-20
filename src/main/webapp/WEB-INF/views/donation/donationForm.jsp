@@ -3,8 +3,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="../header.jsp"/>
 
     <div class="slogan container container--90">
         <div class="slogan--item">
@@ -57,7 +58,8 @@
     <div class="form--steps-container">
         <div class="form--steps-counter">Krok <span>1</span>/4</div>
 
-        <form:form action="/donation/add" method="post" modelAttribute="donation" >
+        <form:form action="/donation/add/${userId}" method="post" modelAttribute="donation" >
+
             <!-- STEP 1: class .active is switching steps -->
             <div data-step="1" class="active">
                 <h3>Zaznacz co chcesz oddać:</h3>
@@ -228,4 +230,4 @@
     </div>
 </section>
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="../footer.jsp"/>

@@ -2,20 +2,20 @@ package pl.coderslab.charity.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.dto.UserDonationDto;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
+import pl.coderslab.charity.security.CurrentUser;
 import pl.coderslab.charity.service.CategoryService;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
+import pl.coderslab.charity.service.UserService;
 
 import java.util.List;
 
@@ -23,6 +23,8 @@ import java.util.List;
 @RequestMapping("/donation")
 @RequiredArgsConstructor
 public class DonationController {
+
+    private final UserService userService;
 
     private final InstitutionService institutionService;
 
@@ -37,21 +39,39 @@ public class DonationController {
     public List<Category> categories(){ return categoryService.findAllCategories();}
 
     @GetMapping("/add")
-    public String showForm(Model model){
+    public String showForm(Model model, @AuthenticationPrincipal CurrentUser currentUser){
+
+        model.addAttribute("userId", 0L);
+        if(currentUser != null){
+            model.addAttribute("userId", currentUser
+                    .getUser()
+                    .getId());
+        }
+
+
         model.addAttribute("donation", new Donation());
 
-        return "donationForm";
+        return "donation/donationForm";
     }
 
-    @PostMapping("/add")
-    public String processForm(@Valid Donation donation, BindingResult result){
+    @PostMapping("/add/{userId}")
+    public String processForm(@Valid Donation donation, BindingResult result, @PathVariable long userId){
 
         if(result.hasErrors()){
-            return "donationForm";
+            return "donation/donationForm";
         }
         donationService.addDonation(donation);
 
-        return "formConfirmation";
+        if(userId > 0){
+            UserDonationDto userDonationDto = UserDonationDto.builder()
+                    .donation(donation)
+                    .userId(userId)
+                    .build();
+
+            userService.addDonationToUser(userDonationDto);
+        }
+
+        return "donation/formConfirmation";
     }
 
 }

@@ -2,13 +2,14 @@ package pl.coderslab.charity.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.bcel.BcelAccessForInlineMunger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import pl.coderslab.charity.dto.UserNameDto;
+import pl.coderslab.charity.dto.UserDonationDto;
+import pl.coderslab.charity.dto.UserDto;
+import pl.coderslab.charity.dto.UserEditDto;
 import pl.coderslab.charity.dto.UserPasswordDto;
 import pl.coderslab.charity.entity.Role;
 import pl.coderslab.charity.entity.User;
@@ -39,7 +40,7 @@ public class UserService implements CustomUserService {
 
 
     @Override
-    public User saveUser(UserNameDto userDto){
+    public User saveUser(UserDto userDto){
 
         User user = new User();
         Role userRole;
@@ -81,7 +82,7 @@ public class UserService implements CustomUserService {
         return userRepository.findAll();
     }
 
-    public UserNameDto getUserNameDTO(long id){
+    public UserEditDto getUserEditDTO(long id){
 
         return getUserById(id).getAsDTO();
     }
@@ -90,13 +91,13 @@ public class UserService implements CustomUserService {
         return getUserById(id).getPasswordAsDTO();
     }
 
-    public void editUser(UserNameDto userNameDto) throws UsernameNotFoundException {
+    public void editUser(UserEditDto userEditDto) throws UsernameNotFoundException {
 
-        User user = userRepository.findUserByUsername(userNameDto.getEmail());
+        User user = userRepository.findUserByUsername(userEditDto.getEmail());
 
-        user.setName(userNameDto.getUserName());
-        user.setUsername(userNameDto.getEmail());
-        user.setEnabled(userNameDto.isEnabled());
+        user.setName(userEditDto.getUserName());
+        user.setUsername(userEditDto.getEmail());
+        user.setEnabled(userEditDto.isEnabled());
 
         userRepository.save(user);
 
@@ -119,5 +120,13 @@ public class UserService implements CustomUserService {
         userRepository.save(user);
 
         return true;
+    }
+
+    public void addDonationToUser(UserDonationDto userDonationDto) throws ResponseStatusException{
+        Optional<User> userOptional = userRepository.findById(userDonationDto.getUserId());
+           User user = userOptional.orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+           user.getDonation()
+                   .add(userDonationDto.getDonation());
+           userRepository.save(user);
     }
 }

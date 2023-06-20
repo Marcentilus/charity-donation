@@ -2,15 +2,14 @@ package pl.coderslab.charity.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.coderslab.charity.dto.UserNameDto;
+import pl.coderslab.charity.dto.UserDto;
+import pl.coderslab.charity.dto.UserEditDto;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.security.CurrentUser;
@@ -103,7 +102,7 @@ public class AdminController {
     public String adminEditUser(@PathVariable long id,Model model){
 
         try {
-            model.addAttribute("user", userService.getUserNameDTO(id));
+            model.addAttribute("user", userService.getUserEditDTO(id));
             model.addAttribute("userPassword", userService.getUserPasswordDTO(id));
         } catch(ResponseStatusException e){
             return "404";
@@ -112,15 +111,15 @@ public class AdminController {
         return "user/adminEdit";
     }
     @PostMapping("user/edit")
-    public String editUser(@Valid UserNameDto userNameDto, BindingResult result){
+    public String editUser(@Valid UserEditDto userEditDto, BindingResult result){
         if(result.hasErrors()){
             return "user/userDetails";
         }
 
-        boolean test = userNameDto.isEnabled();
+
         try {
-            userService.editUser(userNameDto);
-        } catch (UsernameNotFoundException e){
+            userService.editUser(userEditDto);
+        } catch (NullPointerException e){
             return "404";
         }
 
@@ -144,7 +143,7 @@ public class AdminController {
     @GetMapping("/add")
     public String showAdminForm(Model model){
 
-        UserNameDto admin = UserNameDto.builder()
+        UserDto admin = UserDto.builder()
                         .admin(true)
                                 .build();
 

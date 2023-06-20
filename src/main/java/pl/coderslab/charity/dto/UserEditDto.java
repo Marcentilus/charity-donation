@@ -2,20 +2,16 @@ package pl.coderslab.charity.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 @Builder
 @Data
 @AllArgsConstructor
-public class UserNameDto {
-
+public class UserEditDto {
     @NotBlank
     private String userName;
-
-    @NotBlank
-    @Size(min = 8)
-    private String password;
 
     @Email
     private String email;
@@ -23,12 +19,6 @@ public class UserNameDto {
     private boolean enabled;
 
     private boolean admin;
-
-    public UserNameDto(){
-
-    }
-
-
 
 
 }

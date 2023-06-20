@@ -9,9 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pl.coderslab.charity.dto.UserNameDto;
+import pl.coderslab.charity.dto.UserDto;
+import pl.coderslab.charity.dto.UserEditDto;
 import pl.coderslab.charity.dto.UserPasswordDto;
-import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.security.CurrentUser;
 import pl.coderslab.charity.service.UserService;
 
@@ -27,13 +27,13 @@ public class UserController {
 
     @GetMapping("/add")
     public String showUserForm(Model model){
-        model.addAttribute("user", new UserNameDto());
+        model.addAttribute("user", new UserDto());
 
         return "user/register";
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid UserNameDto user, BindingResult result){
+    public String addUser(@Valid UserDto user, BindingResult result){
         if(result.hasErrors()){
             return "user/register";
         }
@@ -67,12 +67,12 @@ public class UserController {
 
     }
     @PostMapping("/edit")
-    public String editUser(@Valid UserNameDto userNameDto, BindingResult result){
+    public String editUser(@Valid UserEditDto userEditDto, BindingResult result){
         if(result.hasErrors()){
             return "user/userDetails";
         }
 
-        userService.editUser(userNameDto);
+        userService.editUser(userEditDto);
 
         return "index";
     }
@@ -81,7 +81,7 @@ public class UserController {
     public String showUserDetails(Model model, @PathVariable long id){
 
         try {
-            model.addAttribute("user", userService.getUserNameDTO(id));
+            model.addAttribute("user", userService.getUserEditDTO(id));
             model.addAttribute("userPassword", userService.getUserPasswordDTO(id));
         } catch(ResponseStatusException e){
             return "404";

@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import pl.coderslab.charity.dto.UserNameDto;
+import pl.coderslab.charity.dto.UserDto;
+import pl.coderslab.charity.dto.UserEditDto;
 import pl.coderslab.charity.dto.UserPasswordDto;
 
 
@@ -53,8 +54,8 @@ public class User {
 
     }
 
-    public UserNameDto getAsDTO(){
-        return UserNameDto.builder()
+    public UserEditDto getAsDTO(){
+        return UserEditDto.builder()
                 .userName(this.name)
                 .email(this.username)
                 .enabled(this.enabled)
