@@ -10,6 +10,7 @@
 <sec:authorize access="isAuthenticated()">
 
         <li><a href="<c:url value="/user/details/${userId}"/>" class="btn btn--without-border">Szczegóły konta</a></li>
+        <li><a href="<c:url value="/donation/list/${userId}"/>" class="btn btn--without-border">Lista darów</a></li>
     </ul>
 
     </nav>

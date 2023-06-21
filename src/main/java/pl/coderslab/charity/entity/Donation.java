@@ -5,7 +5,10 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
+import pl.coderslab.charity.dto.DonationDto;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,4 +51,26 @@ public class Donation {
     private LocalTime pickUpTime;
 
     private String pickUpComment;
+
+    @ManyToOne
+    private User user;
+
+    private LocalDateTime createdOn;
+
+    @PrePersist
+    public void prePersist(){
+        this.createdOn = LocalDateTime.now();
+    }
+
+    public DonationDto getDonationAsDto(){
+
+        return  DonationDto.builder()
+                .categories(this.categories)
+                .institution(this.institution.getName())
+                .pickUpDate(this.pickUpDate)
+                .dateAdded(this.createdOn)
+                .build();
+
+    }
+
 }

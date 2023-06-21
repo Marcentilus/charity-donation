@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import pl.coderslab.charity.dto.UserDonationDto;
 import pl.coderslab.charity.entity.Category;
 import pl.coderslab.charity.entity.Donation;
@@ -72,6 +73,25 @@ public class DonationController {
         }
 
         return "donation/formConfirmation";
+    }
+
+    @GetMapping("/list/{id}")
+    public String donationList(@PathVariable long id, Model model){
+        model.addAttribute("donations", donationService.findDonationsByUser(id));
+
+        return "user/donationList";
+    }
+
+    @GetMapping("/details/{id}")
+    public String donationDetails(@PathVariable long id, Model model){
+
+        try {
+            model.addAttribute("donation", donationService.findDonationById(id));
+        } catch (ResponseStatusException e){
+            return "404";
+        }
+
+      return "user/donation";
     }
 
 }

@@ -37,19 +37,22 @@ public class HomeController {
         userService.saveUser(admin);*/
 
         if(currentUser != null) {
-            model.addAttribute("userId", currentUser
+            long id = currentUser
                     .getUser()
-                    .getId());
+                    .getId();
+            model.addAttribute("userId", id);
             session.setAttribute("username", currentUser
                     .getUser()
                     .getName());
+
+            model.addAttribute("totalQuantity", donationService.getTotalDonationQty(id));
+
+            model.addAttribute("totalDonations", donationService.getTotalDonations(id));
         }
 
         model.addAttribute("institutions", institutionService.findFirstFourInstitutions());
 
-        model.addAttribute("totalQuantity", donationService.getTotalDonationQty());
 
-        model.addAttribute("totalDonations", donationService.getTotalDonations());
 
 
 
