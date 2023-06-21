@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.security.CurrentUser;
 import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
@@ -27,7 +28,7 @@ public class HomeController {
     @RequestMapping("/")
     public String homeAction(Model model, @AuthenticationPrincipal CurrentUser currentUser, HttpSession session){
 
-  /*      UserNameDto admin = UserNameDto.builder()
+      /*  UserDto admin = UserDto.builder()
                 .email("admin@charity.pl")
                 .userName("admin")
                 .password("12345678")

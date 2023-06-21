@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import pl.coderslab.charity.dto.UserDonationDto;
 import pl.coderslab.charity.dto.UserDto;
@@ -82,18 +83,18 @@ public class UserService implements CustomUserService {
         return userRepository.findAll();
     }
 
-    public UserEditDto getUserEditDTO(long id){
+    public UserEditDto getUserEditDTO(long id) throws ResponseStatusException{
 
         return getUserById(id).getAsDTO();
     }
 
-    public UserPasswordDto getUserPasswordDTO(long id){
+    public UserPasswordDto getUserPasswordDTO(long id) throws ResponseStatusException {
         return getUserById(id).getPasswordAsDTO();
     }
 
-    public void editUser(UserEditDto userEditDto) throws UsernameNotFoundException {
+    public void editUser(UserEditDto userEditDto, long id) throws ResponseStatusException{
 
-        User user = userRepository.findUserByUsername(userEditDto.getEmail());
+        User user = userRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         user.setName(userEditDto.getUserName());
         user.setUsername(userEditDto.getEmail());
@@ -103,9 +104,9 @@ public class UserService implements CustomUserService {
 
     }
 
-    public boolean editPassword( String username, UserPasswordDto userPasswordDto){
+    public boolean editPassword( long id, UserPasswordDto userPasswordDto) throws ResponseStatusException{
 
-        User user = userRepository.findUserByUsername(username);
+        User user = userRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         if(user == null){
             return false;

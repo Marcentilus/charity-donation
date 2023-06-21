@@ -10,7 +10,7 @@
 
 <div class="slogan container container--90">
   <h2>
-    Hasło zostało zmienione.
+    Hasło zostało zmienione. Zaloguj się ponownie
   </h2>
 </div>
 </header>

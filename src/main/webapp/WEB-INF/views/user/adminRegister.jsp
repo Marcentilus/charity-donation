@@ -9,7 +9,7 @@
 
 <section class="login-page">
   <h2>Załóż konto</h2>
-  <form:form modelAttribute="user" action="/user/add" method="post">
+  <form:form modelAttribute="user" action="/admin/add" method="post">
 
     <div class="form-group">
       <form:input path="userName" placeholder="Imię" /><form:errors path="userName" cssClass="error"/>

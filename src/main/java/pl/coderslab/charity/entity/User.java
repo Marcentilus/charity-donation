@@ -39,7 +39,7 @@ public class User {
     private boolean admin;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @Builder.Default
     private List<Donation> donation = new ArrayList<>();

@@ -12,7 +12,7 @@
 
 <section class="login-page">
     <h2>Zmiana hasła</h2>
-    <form method="post" action="/user/editPassword/${username}">
+    <form method="post" action="/user/editPassword/${userId}">
 
         <c:if test="${not empty message}">
         <div class="form-group">

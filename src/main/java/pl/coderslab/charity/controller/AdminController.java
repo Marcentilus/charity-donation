@@ -2,6 +2,7 @@ package pl.coderslab.charity.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,6 +103,7 @@ public class AdminController {
     public String adminEditUser(@PathVariable long id,Model model){
 
         try {
+            model.addAttribute("userId", id);
             model.addAttribute("user", userService.getUserEditDTO(id));
             model.addAttribute("userPassword", userService.getUserPasswordDTO(id));
         } catch(ResponseStatusException e){
@@ -110,16 +112,16 @@ public class AdminController {
 
         return "user/adminEdit";
     }
-    @PostMapping("user/edit")
-    public String editUser(@Valid UserEditDto userEditDto, BindingResult result){
+    @PostMapping("user/edit/{userId}")
+    public String editUser(@Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
         if(result.hasErrors()){
             return "user/userDetails";
         }
 
 
         try {
-            userService.editUser(userEditDto);
-        } catch (NullPointerException e){
+            userService.editUser(userEditDto, userId);
+        } catch (ResponseStatusException e){
             return "404";
         }
 
@@ -150,7 +152,17 @@ public class AdminController {
         model.addAttribute("user", admin);
 
 
-        return "user/register";
+        return "user/adminRegister";
+    }
+
+    @PostMapping("/add")
+    public String addAdmin(@Valid UserDto user, @NotNull BindingResult result){
+        if(result.hasErrors()){
+            return "user/adminRegister";
+        }
+        userService.saveUser(user);
+
+        return "index";
     }
 
 }

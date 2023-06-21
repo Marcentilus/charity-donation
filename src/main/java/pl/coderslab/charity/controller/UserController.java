@@ -3,6 +3,7 @@ package pl.coderslab.charity.controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid UserDto user, BindingResult result){
+    public String addUser(@Valid UserDto user, @NotNull BindingResult result){
         if(result.hasErrors()){
             return "user/register";
         }
@@ -42,21 +43,27 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/editPassword/{username}")
-    public String showEditPasswordForm(@PathVariable String username, Model model){
+    @GetMapping("/editPassword/{userId}")
+    public String showEditPasswordForm(@PathVariable("userId") long id, Model model){
 
 
-        model.addAttribute("username", username);
+        model.addAttribute("userId", id);
 
         return "user/changePassword";
     }
-    @PostMapping("/editPassword/{username}")
-    public String changePassword(@PathVariable String username, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, Model model, HttpServletRequest request) throws ServletException {
+    @PostMapping("/editPassword/{userId}")
+    public String changePassword(@PathVariable("userId") long id, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword, Model model, HttpServletRequest request) throws ServletException {
         UserPasswordDto userPasswordDto = UserPasswordDto.builder()
                 .oldPassword(oldPassword)
                 .newPassword(newPassword)
                 .build();
-        boolean passwordValidation = userService.editPassword(username, userPasswordDto);
+        boolean passwordValidation;
+
+        try {
+            passwordValidation = userService.editPassword(id, userPasswordDto);
+        } catch (ResponseStatusException e){
+            return "404";
+        }
         if(!passwordValidation){
             model.addAttribute("message", "password does not match");
             return "user/changePassword";
@@ -66,23 +73,27 @@ public class UserController {
         return "user/passwordChangeConfirmation";
 
     }
-    @PostMapping("/edit")
-    public String editUser(@Valid UserEditDto userEditDto, BindingResult result){
+    @PostMapping("/edit/{userId}")
+    public String editUser(@Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
         if(result.hasErrors()){
             return "user/userDetails";
         }
 
-        userService.editUser(userEditDto);
+        userService.editUser(userEditDto, userId);
 
         return "index";
     }
 
     @GetMapping("/details/{id}")
-    public String showUserDetails(Model model, @PathVariable long id){
+    public String showUserDetails(Model model, @PathVariable long id, @AuthenticationPrincipal CurrentUser currentUser){
 
+        if(currentUser != null) {
+            model.addAttribute("userId", currentUser
+                    .getUser()
+                    .getId());
+        }
         try {
             model.addAttribute("user", userService.getUserEditDTO(id));
-            model.addAttribute("userPassword", userService.getUserPasswordDTO(id));
         } catch(ResponseStatusException e){
             return "404";
         }
