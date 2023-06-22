@@ -17,7 +17,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
     @Query("select count(d.id) from Donation d where d.user.id =:id")
     Optional<Long> countByUser(long id);
 
-    @Query("select d from Donation d where d.user.id =:id")
+    @Query("select d from Donation d where d.user.id =:id order by d.collected desc , d.deactivatedOn desc, d.createdOn desc")
     List<Donation> getDonationsByUser(long id);
 
 

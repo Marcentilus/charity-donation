@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import pl.coderslab.charity.dto.DonationDetailsDto;
 import pl.coderslab.charity.dto.DonationDto;
+import pl.coderslab.charity.dto.UserDonationDto;
 import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.repository.DonationRepository;
 
@@ -13,8 +15,6 @@ import pl.coderslab.charity.repository.DonationRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,12 +23,21 @@ public class DonationService {
 
     private final DonationRepository donationRepository;
 
-    public DonationDto findDonationById(long id) throws ResponseStatusException {
+    private final UserService userService;
+
+    public DonationDetailsDto findDonationDetailsById(long id) throws ResponseStatusException {
 
         return donationRepository
                 .findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Donation not found"))
-                .getDonationAsDto();
+                .getDonationDetails();
+
+    }
+
+    public Donation findDonationById(long id) throws ResponseStatusException{
+        return donationRepository
+                .findById(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Donation not found"));
 
     }
 
@@ -36,21 +45,21 @@ public class DonationService {
         return donationRepository.findAll();
     }
 
-    public List<DonationDto> findDonationsByUser(long id){
+    public List<DonationDetailsDto> findDonationsByUser(long id){
         List<Donation> donations = donationRepository.getDonationsByUser(id);
         if(donations == null){
             return new ArrayList<>();
         }
 
-        List<DonationDto> donationDtos = donations.stream()
-                .map(Donation::getDonationAsDto).toList();
+        List<DonationDetailsDto> donationDetailsDtoList = donations.stream()
+                .map(Donation::getDonationDetails).toList();
 
-        for (DonationDto donationDto: donationDtos) {
+        for (DonationDetailsDto donationDto: donationDetailsDtoList) {
             if(donationDto.getPickUpDate().isBefore(LocalDate.now())){
                 donationDto.setCollected(true);
             }
         }
-        return donationDtos;
+        return donationDetailsDtoList;
     }
 
     public int getTotalDonationQty(long id) {
@@ -63,9 +72,27 @@ public class DonationService {
         return donationRepository.countByUser(id).orElse(0L);
     }
 
-    public void addDonation(Donation donation){
+    public UserDonationDto addDonation(DonationDto donationDto, long userId) {
 
-        donationRepository.save(donation);
-    }
+        Donation donation = donationRepository.save(donationDto.getDonationFromDto());
+
+
+        return new UserDonationDto(userId, donation);
+
+
+        }
+
+        public void deactivateDonation(long id) throws  ResponseStatusException{
+
+
+            Donation donation = findDonationById(id);
+            if(donation == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Donation not found");
+            }
+            donation.setCollected(true);
+
+            donationRepository.save(donation);
+
+        }
 
 }

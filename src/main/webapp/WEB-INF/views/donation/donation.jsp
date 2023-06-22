@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -13,8 +14,6 @@
 
     <link rel="stylesheet" href="<c:url value="/resources/css/style.css"/>"/>
 </head>
-
-<body>
 <header>
     <nav class="container container--70">
         <ul class="nav--actions">
@@ -34,33 +33,34 @@
             <li><a href="<c:url value="/"/>" class="btn btn--without-border">Home</a></li>
             <li><a href="#" class="btn btn--without-border">O co chodzi?</a></li>
             <li><a href="#" class="btn btn--without-border">O nas</a></li>
-            <li><a href="#" class="btn btn--without-border">Kontakt</a></li>
+            <sec:authorize access="isAuthenticated()">
 
+            <li><a href="<c:url value="/user/details/${us}"/>" class="btn btn--without-border">Szczegóły konta</a></li>
+            <li><a href="<c:url value="/donation/list/${userId}"/>" class="btn btn--without-border">Lista darów</a></li>
         </ul>
+
     </nav>
+    </sec:authorize>
 </header>
-
-<br><br>
-
-<c:forEach items="${donations}" var="donation">
+<body>
 <div class="slogan container container--90">
-
-
-    <div class="row">
-        <div class="col-sm-6">
-            <h1>
-                <c:forEach items="${donation.categories}" var="category">
-                Kategoria daru:  ${category.name}<br><br>
-                </c:forEach>
-            </h1>
-        </div>
+<div class="row">
+    <div class="col-sm-6">
+        <h1>
+        Instytucja: ${donation.institution}
+        </h1>
+        <h1 style="float: right"><a href="<c:url value="/donation/deactivate/${donation.id}"/>">Oznacz jako odebrane</a></h1><br>
+        <c:if test="${donation.collected}">
+            <h1>Odebrany: tak</h1><br>
+        </c:if>
+        <c:if test="${not donation.collected}">
+            <h1>Odebrany: nie</h1><br>
+        </c:if>
+        <h1> Data odbioru daru: ${donation.pickUpDate}</h1><br>
+        <h1>Data wpisu: ${donation.createdOn}</h1>
     </div>
-    <hr>
 
 </div>
-</c:forEach>
-
-
 
 
 <jsp:include page="../footer.jsp"/>

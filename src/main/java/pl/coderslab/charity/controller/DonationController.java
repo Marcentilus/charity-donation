@@ -8,9 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import pl.coderslab.charity.dto.DonationDto;
 import pl.coderslab.charity.dto.UserDonationDto;
 import pl.coderslab.charity.entity.Category;
-import pl.coderslab.charity.entity.Donation;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.security.CurrentUser;
 import pl.coderslab.charity.service.CategoryService;
@@ -50,26 +50,26 @@ public class DonationController {
         }
 
 
-        model.addAttribute("donation", new Donation());
+        model.addAttribute("donation", new DonationDto());
 
         return "donation/donationForm";
     }
 
     @PostMapping("/add/{userId}")
-    public String processForm(@Valid Donation donation, BindingResult result, @PathVariable long userId){
+    public String processForm(@Valid DonationDto donationDto, BindingResult result, @PathVariable long userId){
 
         if(result.hasErrors()){
             return "donation/donationForm";
         }
-        donationService.addDonation(donation);
+        UserDonationDto userDonationDto = donationService.addDonation(donationDto, userId);
 
         if(userId > 0){
-            UserDonationDto userDonationDto = UserDonationDto.builder()
-                    .donation(donation)
-                    .userId(userId)
-                    .build();
 
-            userService.addDonationToUser(userDonationDto);
+            try {
+                userService.addDonationToUser(userDonationDto);
+            } catch (ResponseStatusException e){
+                return "404";
+            }
         }
 
         return "donation/formConfirmation";
@@ -78,20 +78,41 @@ public class DonationController {
     @GetMapping("/list/{id}")
     public String donationList(@PathVariable long id, Model model){
         model.addAttribute("donations", donationService.findDonationsByUser(id));
+        model.addAttribute("userId", id);
 
-        return "user/donationList";
+        return "donation/donationList";
     }
 
-    @GetMapping("/details/{id}")
-    public String donationDetails(@PathVariable long id, Model model){
+    @GetMapping("/details/{donationId}/{userId}")
+    public String donationDetails(@PathVariable long donationId, @PathVariable long userId, Model model){
 
         try {
-            model.addAttribute("donation", donationService.findDonationById(id));
+            model.addAttribute("donation", donationService.findDonationDetailsById(donationId));
+            model.addAttribute("userId", userId);
         } catch (ResponseStatusException e){
             return "404";
         }
 
-      return "user/donation";
+      return "donation/donation";
+    }
+
+    @GetMapping("/deactivate/{donationId}")
+    public String deactivateDonation(@PathVariable long donationId, @AuthenticationPrincipal CurrentUser currentUser){
+
+
+        if(currentUser != null) {
+            long userId = currentUser
+                    .getUser()
+                    .getId();
+            try {
+                donationService.deactivateDonation(donationId);
+            } catch (ResponseStatusException e) {
+                return "404";
+            }
+            return "redirect:/donation/details/" + donationId + "/" + userId;
+        }
+        return "index";
+
     }
 
 }

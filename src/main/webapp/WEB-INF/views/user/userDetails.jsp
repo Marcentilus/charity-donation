@@ -3,13 +3,21 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
 <jsp:include page="../header.jsp"/>
-</header>
-</ul>
+<sec:authorize access="isAuthenticated()">
 
-</nav>
+    <li><a href="<c:url value="/user/details/${userId}"/>" class="btn btn--without-border">Szczegóły konta</a></li>
+    <li><a href="<c:url value="/donation/list/${userId}"/>" class="btn btn--without-border">Lista darów</a></li>
+    </ul>
+
+    </nav>
+</sec:authorize>
+
+</header>
+
 
 <section class="login-page">
     <h2>Sczegóły konta</h2>
