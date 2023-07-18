@@ -24,7 +24,7 @@ public class WebSecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                         .shouldFilterAllDispatcherTypes(false)
-                        .requestMatchers( "/", "/login", "/resources/**", "/donation/add", "/user/add" ).permitAll()
+                        .requestMatchers( "/", "/login", "/resources/**", "/donation/add", "/user/add", "/user/register" ).permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated()
 

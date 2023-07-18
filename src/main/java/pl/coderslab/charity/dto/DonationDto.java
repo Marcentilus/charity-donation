@@ -30,7 +30,7 @@ public class DonationDto {
 
     private boolean collected;
 
-    private LocalDateTime dateAdded;
+    private LocalDate dateAdded;
 
     @NotNull
     private LocalTime pickUpTime;

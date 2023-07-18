@@ -28,11 +28,11 @@ public class DonationDetailsDto {
 
     private boolean collected;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
-    private LocalDateTime createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdOn;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
-    private LocalDateTime collectedOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate collectedOn;
 
 
 

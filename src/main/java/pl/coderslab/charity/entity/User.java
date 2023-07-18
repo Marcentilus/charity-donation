@@ -3,6 +3,7 @@ package pl.coderslab.charity.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import pl.coderslab.charity.dto.UserDto;
 import pl.coderslab.charity.dto.UserEditDto;
@@ -27,11 +28,10 @@ public class User {
 
     private String name;
 
-    @NotBlank
+
     private String password;
 
-    @NotBlank
-    @Email
+
     private String username;
 
     private boolean enabled;

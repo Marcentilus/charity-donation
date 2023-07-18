@@ -12,13 +12,13 @@
   <form:form modelAttribute="user" action="/user/add" method="post">
 
     <div class="form-group">
-      <form:input path="userName" placeholder="Imię" /><form:errors path="userName" cssClass="error"/>
+      <form:input path="userName" placeholder="Imię" /><form:errors path="userName" cssClass="error" element="div"/>
     </div>
     <div class="form-group">
-      <form:input path="email" type="email" placeholder="Email" /><form:errors path="email" cssClass="error"/>
+      <form:input path="email" type="email" placeholder="Email" /><form:errors path="email" cssClass="error" element="div"/>
     </div>
     <div class="form-group">
-      <form:password path="password" placeholder="Hasło" /><form:errors path="password" cssClass="eror"/>
+      <form:password path="password" placeholder="Hasło" /><form:errors path="password" cssClass="error" element="div"/>
     </div>
     <div class="form-group">
       <input type="password" name="password2" placeholder="Powtórz hasło" />

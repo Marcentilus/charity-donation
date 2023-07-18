@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid UserDto user, @NotNull BindingResult result){
+    public String addUser(@ModelAttribute("user") @Valid UserDto user, @NotNull BindingResult result){
         if(result.hasErrors()){
             return "user/register";
         }
@@ -74,7 +74,7 @@ public class UserController {
 
     }
     @PostMapping("/edit/{userId}")
-    public String editUser(@Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
+    public String editUser(@ModelAttribute("user") @Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
         if(result.hasErrors()){
             return "user/userDetails";
         }

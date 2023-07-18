@@ -29,11 +29,14 @@
                 <span class="description">Active</span>
             </label>
         </div>
+        <div>
+            <form:hidden path="admin"/>
+        </div>
 
         <div class="form-group form-group--buttons">
             <a href="<c:url value="/"/>" class="btn btn--without-border">Anuluj</a>
             <a href="<c:url value="/user/editPassword/${userId}"/>" class="btn btn--without-border">Zmień hasło</a>
-            <button class="btn" type="submit">Zapisz</button>
+            <form:button class="btn" type="submit">Zapisz</form:button>
         </div>
 
     </form:form>

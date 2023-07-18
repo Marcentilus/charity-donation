@@ -60,12 +60,12 @@ public class Donation {
     @ManyToOne
     private User user;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
-    private LocalDateTime createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdOn;
 
     private boolean collected;
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss a")
-    private LocalDateTime deactivatedOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate deactivatedOn;
 
     public Donation(){
 
@@ -73,11 +73,11 @@ public class Donation {
 
     @PrePersist
     public void prePersist(){
-        this.createdOn = LocalDateTime.now();
+        this.createdOn = LocalDate.now();
     }
 
     @PreUpdate
-    public void preUpdate(){ this.deactivatedOn = LocalDateTime.now();}
+    public void preUpdate(){ this.deactivatedOn = LocalDate.now();}
 
     public DonationDto getDonationAsDto(){
 

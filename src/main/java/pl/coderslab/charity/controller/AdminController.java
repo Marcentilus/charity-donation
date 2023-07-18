@@ -113,9 +113,9 @@ public class AdminController {
         return "user/adminEdit";
     }
     @PostMapping("user/edit/{userId}")
-    public String editUser(@Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
+    public String editUser(@ModelAttribute("user") @Valid UserEditDto userEditDto, BindingResult result, @PathVariable long userId){
         if(result.hasErrors()){
-            return "user/userDetails";
+            return "user/adminEdit";
         }
 
 
@@ -156,11 +156,13 @@ public class AdminController {
     }
 
     @PostMapping("/add")
-    public String addAdmin(@Valid UserDto user, @NotNull BindingResult result){
+    public String addAdmin(@ModelAttribute("user") @Valid UserDto user, @NotNull BindingResult result, Model model){
         if(result.hasErrors()){
             return "user/adminRegister";
         }
-        userService.saveUser(user);
+       User userEntity = userService.saveUser(user);
+
+        model.addAttribute("userId",userEntity.getId());
 
         return "index";
     }

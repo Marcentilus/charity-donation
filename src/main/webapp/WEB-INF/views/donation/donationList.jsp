@@ -41,7 +41,11 @@
 </header>
 
 <br><br>
-
+<c:if test="${empty donations}">
+<div class="warning">
+Lista nie zawiera żadnych elementów
+</div>
+</c:if>
 <c:forEach items="${donations}" var="donation">
 <div class="slogan container container--90">
 
